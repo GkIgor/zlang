@@ -3,6 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
+
+	"github.com/GkIgor/zlang/lexer"
 )
 
 var Target string = "./default.etq"
@@ -28,5 +30,12 @@ func ToggleTarget(target *string) {
 
 func main() {
 	ReadFlags()
+	input := `image:"example.jpg", text:"hello world", attr:"width" "100px", attr:"height" "200px";
+	image:"another.jpg", text:"another text";`
+	tokens := lexer.Lex(input)
+
+	for _, token := range tokens {
+		fmt.Printf("Type: %s, Value: %s\n", token.Type, token.Value)
+	}
 
 }
