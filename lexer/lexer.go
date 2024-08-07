@@ -25,12 +25,28 @@ const (
 	TokenKey     TokenType = "key"
 	TokenValue   TokenType = "value"
 	TokenLineEnd TokenType = "lineEnd"
+	ILLEGAL      TokenType = "ILLEGAL"
+	EOF          TokenType = "EOF"
+	IDENT        TokenType = "IDENT"
+	COMMA        TokenType = ","
+	LPAREN       TokenType = "("
+	RPAREN       TokenType = ")"
+	STRING       TokenType = "STRING"
+	NUMBER       TokenType = "NUMBER"
+	SEMICOLON    TokenType = ";"
 )
 
 // Define a token structure
 type Token struct {
 	Type  TokenType
 	Value string
+}
+
+type Lexer struct {
+	input        string
+	position     int
+	readPosition int
+	ch           byte
 }
 
 // Implement the lexer
