@@ -1,6 +1,8 @@
 package lexer
 
 import (
+	"fmt"
+	"strconv"
 	"strings"
 )
 
@@ -21,7 +23,6 @@ type TokenType string
 const (
 	TokenImage   TokenType = "image"
 	TokenText    TokenType = "text"
-	TokenAttr    TokenType = "attr"
 	TokenKey     TokenType = "key"
 	TokenValue   TokenType = "value"
 	TokenLineEnd TokenType = "lineEnd"
@@ -34,6 +35,7 @@ const (
 	STRING       TokenType = "STRING"
 	NUMBER       TokenType = "NUMBER"
 	SEMICOLON    TokenType = ";"
+	ASSIGN       TokenType = "="
 )
 
 // Define a token structure
@@ -42,47 +44,28 @@ type Token struct {
 	Value string
 }
 
-type Lexer struct {
-	input        string
-	position     int
-	readPosition int
-	ch           byte
-}
+// type Lexer struct {
+// 	input        string
+// 	position     int
+// 	readPosition int
+// 	ch           byte
+// }
 
-// Implement the lexer
 func Lex(input string) []Token {
 	tokens := []Token{}
-	lines := strings.Split(input, "\n")
+	lines := strings.Split(input, string(SEMICOLON))
 
-	for _, line := range lines {
+	for index, line := range lines {
 		line = strings.TrimSpace(line)
 
-		if len(line) == 0 {
-			continue
-		}
+		// println(line)
 
-		if line[len(line)-1] == ';' {
-			line = line[:len(line)-1]
-		}
+		if len(strings.Split(line, string(ASSIGN))) == 2 {
+			fmt.Println(strings.Split(line, string(ASSIGN)))
 
-		parts := strings.Split(line, ",")
-
-		for _, part := range parts {
-			part = strings.TrimSpace(part)
-
-			if strings.HasPrefix(part, "image") {
-				tokens = append(tokens, Token{Type: TokenImage, Value: part[5 : len(part)-1]})
-			} else if strings.HasPrefix(part, "text") {
-				tokens = append(tokens, Token{Type: TokenText, Value: part[5 : len(part)-1]})
-			} else if strings.HasPrefix(part, "attr") {
-				attr := part[5 : len(part)-1]
-				attrParts := strings.Split(attr, "\" ")
-
-				for i := 0; i < len(attrParts); i += 2 {
-					tokens = append(tokens, Token{Type: TokenKey, Value: attrParts[i][1 : len(attrParts[i])-1]})
-					tokens = append(tokens, Token{Type: TokenValue, Value: attrParts[i+1][1 : len(attrParts[i+1])-1]})
-				}
-			}
+		} else if len(strings.Split(line, string(ASSIGN))) != 2 {
+			fmt.Println(line)
+			panic("Syntax error on line: " + strconv.Itoa(index+1))
 		}
 
 		tokens = append(tokens, Token{Type: TokenLineEnd})
@@ -90,3 +73,23 @@ func Lex(input string) []Token {
 
 	return tokens
 }
+
+// if len(line) == 0 || line == "\n" || line == "\r\n" {
+// 	tokens = append(tokens, Token{Type: TokenLineEnd})
+// 	continue
+// }
+
+// if line[len(line)-1] == ';' {
+// 	line = line[:len(line)-1]
+// }
+
+// parts := strings.Split(line, ",")
+
+// for _, part := range parts {
+// 	part = strings.TrimSpace(part)
+
+// 	if len(part) == 0 {
+// 		continue
+// 	}
+
+// }
