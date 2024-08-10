@@ -1,0 +1,6 @@
+
+^XA = init;
+positionX(50) , positionY(300) , text("hello, world!"); = ^FO50,300^FDhello, world!^FS
+^XZ = end;
+
+; = ^FS
