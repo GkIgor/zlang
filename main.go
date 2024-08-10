@@ -3,7 +3,10 @@ package main
 import (
 	"flag"
 	"fmt"
+	"os"
+	"strings"
 
+	"github.com/GkIgor/zlang/file"
 	"github.com/GkIgor/zlang/lexer"
 )
 
@@ -15,12 +18,12 @@ func ReadFlags() {
 	flag.Parse()
 
 	if target != nil {
-		fmt.Println("Output file:", *target)
+		// fmt.Println("Output file:", *target)
 		ToggleTarget(target)
 	}
 
 	if file != nil {
-		fmt.Println("Input file:", *file)
+		// fmt.Println("Input file:", *file)
 	}
 }
 
@@ -30,12 +33,16 @@ func ToggleTarget(target *string) {
 
 func main() {
 	ReadFlags()
-	input := `image:"example.jpg", text:"hello world", attr:"width" "100px", attr:"height" "200px";
-	image:"another.jpg", text:"another text";`
-	tokens := lexer.Lex(input)
+	fileName := os.Args[1]
 
-	for _, token := range tokens {
-		fmt.Printf("Type: %s, Value: %s\n", token.Type, token.Value)
+	if len(fileName) <= 0 {
+		panic("No input file specified")
 	}
+
+	lines := file.ReadFiles(fileName)
+
+	t := lexer.Lex(strings.Join(lines, ""))
+
+	fmt.Println(t)
 
 }
