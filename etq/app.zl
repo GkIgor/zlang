@@ -1,0 +1,10 @@
+component == import("./component");
+
+init;
+
+positionX(0.0) , positionY(2.77) , text("hello, world!");
+skip;
+component;
+
+end;
+

@@ -1,0 +1,7 @@
+component (
+    positionX(1.5) , positionY(2.0) , image("../assets/img.png");
+    skip;
+    skip;
+    positionX(2.5) , positionY(2.0) , text("___/___/_____");
+    skip;
+)
