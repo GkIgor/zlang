@@ -1,8 +1,6 @@
 package lexer
 
 import (
-	"fmt"
-	"strconv"
 	"strings"
 )
 
@@ -21,21 +19,25 @@ import (
 type TokenType string
 
 const (
-	TokenImage   TokenType = "image"
-	TokenText    TokenType = "text"
-	TokenKey     TokenType = "key"
-	TokenValue   TokenType = "value"
-	TokenLineEnd TokenType = "lineEnd"
-	ILLEGAL      TokenType = "ILLEGAL"
-	EOF          TokenType = "EOF"
-	IDENT        TokenType = "IDENT"
-	COMMA        TokenType = ","
-	LPAREN       TokenType = "("
-	RPAREN       TokenType = ")"
-	STRING       TokenType = "STRING"
-	NUMBER       TokenType = "NUMBER"
-	SEMICOLON    TokenType = ";"
-	ASSIGN       TokenType = "="
+	TokenImage     TokenType = "image"
+	TokenText      TokenType = "text"
+	TokenKey       TokenType = "key"
+	TokenValue     TokenType = "value"
+	TokenVar       TokenType = "VAR"
+	TokenComponent TokenType = "component"
+	TokenLineEnd   TokenType = "lineEnd"
+	STRING         TokenType = "STRING"
+	NUMBER         TokenType = "NUMBER"
+	IDENT          TokenType = "IDENT"
+	EOF            TokenType = "EOF"
+	ILLEGAL        TokenType = "ILLEGAL"
+	COMMA          TokenType = ","
+	LPAREN         TokenType = "("
+	RPAREN         TokenType = ")"
+	SEMICOLON      TokenType = ";"
+	ASSIGN         TokenType = "="
+	NEWLINE        TokenType = "\n"
+	QUOTE          TokenType = "\""
 )
 
 // Define a token structure
@@ -55,20 +57,32 @@ func Lex(input string) []Token {
 	tokens := []Token{}
 	lines := strings.Split(input, string(SEMICOLON))
 
-	for index, line := range lines {
+	for _, line := range lines {
 		line = strings.TrimSpace(line)
-
 		// println(line)
 
-		if len(strings.Split(line, string(ASSIGN))) == 2 {
-			fmt.Println(strings.Split(line, string(ASSIGN)))
+		parts := strings.Split(line, string(ASSIGN))
+		if len(parts) == 2 {
 
-		} else if len(strings.Split(line, string(ASSIGN))) != 2 {
-			fmt.Println(line)
-			panic("Syntax error on line: " + strconv.Itoa(index+1))
+			LexVar(strings.Split(line, string(ASSIGN)), &tokens)
+
+			// tokens = append(tokens, Token{Type: TokenVar, Value: strings.TrimSpace(parts[0])})
+
+			// tokens = append(tokens, Token{Type: TokenValue, Value: strings.TrimSpace(parts[1])})
+
+			if strings.TrimSpace(parts[1]) == string(TokenComponent) {
+
+				// tokens = append(tokens, Token{Type: TokenComponent, Value: strings.TrimSpace(parts[1])})
+			}
+
 		}
 
-		tokens = append(tokens, Token{Type: TokenLineEnd})
+		// else if len(strings.Split(line, string(ASSIGN))) != 2 {
+		// 	fmt.Println(line)
+		// 	panic("Syntax error on line: " + strconv.Itoa(index+1))
+		// }
+
+		// tokens = append(tokens, Token{Type: TokenLineEnd})
 	}
 
 	return tokens
