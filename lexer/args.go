@@ -15,7 +15,7 @@ func LexParent(parts []string, tokens *[]Token) {
 		*tokens = append(*tokens, Token{Type: RPAREN, Value: strings.TrimSpace(parts[0])})
 	}
 
-	if strings.TrimSpace(parts[0]) == string(LPAREN) {
+	if strings.TrimSpace(parts[len(parts)-1]) == string(LPAREN) {
 
 		*tokens = append(*tokens, Token{Type: LPAREN, Value: strings.TrimSpace(parts[0])})
 	}
