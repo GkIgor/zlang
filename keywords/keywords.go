@@ -3,24 +3,26 @@ package keywords
 type Keyword string
 
 const (
-	IF        Keyword = "if"
-	ELSE      Keyword = "else"
-	FOR       Keyword = "for"
-	IMPORT    Keyword = "import"
-	COMPONENT Keyword = "component"
+	If        Keyword = "if"
+	Else      Keyword = "else"
+	For       Keyword = "for"
+	Import    Keyword = "import"
+	Component Keyword = "component"
 )
 
-var keywords = []Keyword{
-	IF,
-	ELSE,
-	FOR,
-	IMPORT,
-	COMPONENT,
+var Keywords = []Keyword{
+	If,
+	Else,
+	For,
+	Import,
+	Component,
 }
 
+// IsKeyword checks if the given word is a keyword.
 func IsKeyword(word string) bool {
-	for _, keyword := range keywords {
-		if string(keyword) == word {
+	kw := Keyword(word)
+	for _, keyword := range Keywords {
+		if keyword == kw {
 			return true
 		}
 	}
